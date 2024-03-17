@@ -1,83 +1,97 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Let's Play Buddy!</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <style>
+        /* Add any custom CSS styles here */
+    </style>
 </head>
-
 <body>
-    <div class=" bg-info text-white container">
-        <center>
-            <p class="display-4">Best Of Luck Buddy</p>
-        </center>
+    <div class="container bg-info text-white">
+        <div class="text-center">
+            <h1 class="display-4">Best Of Luck Buddy</h1>
+        </div>
     </div>
-    <div id="heading">
-    </div>
+
     <div class="display-3 p-3 mb-2 bg-success text-white">
-        <marquee behavior="FastScroll" direction="Left" scrollamount="7"> Welcome Let's Start The Game Buddy !!!
-        </marquee>
+        <marquee behavior="scroll" direction="left" scrollamount="7"> Welcome! Let's Start The Game Buddy !!! </marquee>
     </div>
+
     <div class="buttons">
-        <center>
+        <div class="text-center">
             <button type="button" class="btn btn-dark m-3" onclick="Guess(event)">Rock</button>
-            <button type="button" class="btn btn-dark m-3 " onclick="Guess(event)">Papper</button>
-            <button type="button" class="btn btn-dark m-3" onclick="Guess(event)">Siccor</button>
-        </center>
+            <button type="button" class="btn btn-dark m-3" onclick="Guess(event)">Paper</button>
+            <button type="button" class="btn btn-dark m-3" onclick="Guess(event)">Scissors</button>
+        </div>
     </div>
-    <div class="display-1 p-3 mb-2 " id="Love_You_Buddy"></div>
+
+    <div class="display-1 p-3 mb-2" id="Love_You_Buddy"></div>
+
     <div>
-        <center id="Retry"></center>
+        <div class="text-center" id="Retry"></div>
     </div>
+
     <div class="display-2">
-        <center id="Score"></center>
+        <div class="text-center" id="Score"></div>
     </div>
+
+    <script>
+        "use strict";
+
+        var buttonVal = 0;
+        let score = 0;
+
+        function Guess(event) {
+            try {
+                let options = ["Paper", "Scissors", "Rock"];
+                let computerChoice = options[Math.floor(Math.random() * 3)];
+                let userChoice = event.target.textContent;
+
+                let result = computerChoice === userChoice ? "MATCH DRAW"
+                    : (computerChoice === "Rock" && userChoice === "Paper") || (computerChoice === "Paper" && userChoice === "Scissors") || (computerChoice === "Scissors" && userChoice === "Rock") ? "Congratulations You Won The Computer"
+                        : "Sorry Better Luck Next Time";
+
+                const resultPara = document.createElement("p");
+                resultPara.innerHTML = result;
+                document.getElementById("Love_You_Buddy").innerHTML = "";
+                document.getElementById("Love_You_Buddy").appendChild(resultPara).style.backgroundColor = "rgb(197, 153, 241)";
+
+                event.target.remove();
+
+                if (buttonVal === 0) {
+                    const retryButton = document.createElement("button");
+                    retryButton.innerText = "Retry";
+                    retryButton.setAttribute("onclick", "window.location.reload()");
+                    retryButton.setAttribute("class", "btn btn-danger px-5 mb-3");
+                    document.getElementById("Retry").appendChild(retryButton);
+                }
+
+                if (result === "Congratulations You Won The Computer") {
+                    score += 1;
+                }
+
+                const scorePara = document.createElement("p");
+                scorePara.innerHTML = `Your Score Is ${score} Buddy`;
+                document.getElementById("Score").innerHTML = "";
+                document.getElementById("Score").appendChild(scorePara).style.backgroundColor = "rgb(123, 254, 136)";
+
+                buttonVal += 1;
+
+                if (score === 2) {
+                    alert("Hurray! You won the computer 2 times Buddy!!!");
+                }
+                else if (score === 3) {
+                    alert("Congratulations! You won the computer all the 3 times Buddy!!!");
+                }
+            } catch (error) {
+                console.error("An error occurred:", error);
+                // Handle the error here, such as showing a message to the user or logging it for debugging purposes.
+            }
+        }
+    </script>
 </body>
-<script>
-    "use strict"
-    var button_val = 0
-    let Score = 0
-    function Guess(Values) {
-        let find = ["Papper", "Siccor", "Rock"];
-        let Getter = find[Math.floor(Math.random() * 3)];
-        let Recieved = event.target.textContent
-        let Final_Value = Getter === Recieved ? "MATCH DRAW"
-            : Getter === "Rock" && Recieved === "Papper" ? "Congragulations You Won The Computer"
-                : Getter === "Rock" && Recieved === "Siccor" ? "Sorry Better Luck Next Time"
-                    : Getter === "Paper" && Recieved === "Siccor" ? "Sorry Better Luck Next Time"
-                        : "Congragulations You Won The Computer";
-        const para = document.createElement("p")
-        para.innerHTML = Final_Value;
-        let Final_Touch = -document.getElementById("Love_You_Buddy").appendChild(para);
-        document.getElementById("Love_You_Buddy").style.backgroundColor = "rgb(197, 153, 241)";
-        event.target.remove();
-        if (button_val === 0) {
-            const button_Retry = document.createElement("button");
-            button_Retry.innerText = "Retry";
-            button_Retry.setAttribute("onclick", "window.location.reload()");
-            button_Retry.setAttribute("class", "btn btn-danger  px-5 mb-3");
-            const b_Retry1 = document.getElementById("Retry").appendChild(button_Retry);
-        }
-        if (Final_Value === "Congragulations You Won The Computer") {
-            Score += 1
-        }
-
-        const Scr = document.createElement("p")
-        Scr.innerHTML = `Your Score Is ${Score} Buddy`;
-        let Scr_Final_Touch = document.getElementById("Score").appendChild(Scr);
-        document.getElementById("Score").style.backgroundColor = "rgb(123, 254, 136)";
-
-        button_val += 1
-        if (Score === 2) {
-            alert("Hurray You won The Computer 2 Times Buddy!!!");
-        }
-        else if (Score === 3) {
-            alert("Congragulations You won The Computer All The 3 Times Buddy!!!");
-        }
-    }
-</script>
-
 </html>
