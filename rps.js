@@ -5,12 +5,37 @@ let tries = 0;
 let maxTries = 0;
 
 window.onload = function () {
-  maxTries = parseInt(prompt("How many tries do you want Buddy (Max: 10)"), 10);
-  if (isNaN(maxTries) || maxTries < 1 || maxTries > 10) {
-    maxTries = 5;
-    alert("Invalid input. Setting tries to 5 by default.");
-  }
+  // Disable game buttons initially
+  document.querySelectorAll(".btn-dark").forEach(btn => btn.disabled = true);
+
+  // Clear previous results if any
+  document.getElementById("Love_You_Buddy").innerHTML = "";
+  document.getElementById("Score").innerHTML = "";
+  document.getElementById("Retry").innerHTML = "";
+
   updateProgressBar();
+
+  // Setup Start Game button listener
+  document.getElementById("startGameBtn").onclick = () => {
+    const selected = parseInt(document.getElementById("maxTriesSelect").value, 10);
+    if (isNaN(selected) || selected < 1 || selected > 10) {
+      alert("Invalid input, please select between 1 and 10.");
+      return;
+    }
+    maxTries = selected;
+    score = 0;
+    tries = 0;
+
+    // Enable the game buttons
+    document.querySelectorAll(".btn-dark").forEach(btn => btn.disabled = false);
+
+    // Clear previous results
+    document.getElementById("Love_You_Buddy").innerHTML = "";
+    document.getElementById("Score").innerHTML = "";
+    document.getElementById("Retry").innerHTML = "";
+
+    updateProgressBar();
+  };
 };
 
 function Guess(event) {
@@ -73,6 +98,11 @@ function Guess(event) {
 }
 
 function updateProgressBar() {
+  if (maxTries === 0) {
+    document.getElementById("progress-bar").style.width = `0%`;
+    document.getElementById("progress-bar").innerText = `0 / 0`;
+    return;
+  }
   const progress = (tries / maxTries) * 100;
   const progressBar = document.getElementById("progress-bar");
   progressBar.style.width = `${progress}%`;
